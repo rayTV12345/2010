@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#15122a">
+<title>뭐해 · 200명 기념 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #5B4FCF;
+  --purple-light: #9B8FE8;
+  --purple-pale: #C4BCFF;
+  --yellow: #F4C552;
+  --coral: #FF7B6B;
+  --night2: #15122a;
+  --surface: rgba(255,255,255,0.05);
+  --border: rgba(155,143,232,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--night2);
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#starCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+#confettiCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 999;
+}
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 52px 20px 100px;
+}
+
+.header { text-align: center; margin-bottom: 48px; }
+
+.badge {
+  display: inline-block;
+  background: rgba(91,79,207,0.25);
+  border: 1px solid var(--border);
+  color: var(--purple-pale);
+  font-size: 12px; font-weight: 500;
+  padding: 6px 18px; border-radius: 20px;
+  letter-spacing: 0.1em; margin-bottom: 24px;
+}
+
+.big-num {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(72px, 22vw, 130px);
+  font-weight: 700; line-height: 0.9;
+  background: linear-gradient(135deg, var(--purple-light) 0%, var(--yellow) 50%, var(--coral) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  animation: floatNum 4s ease-in-out infinite;
+}
+@keyframes floatNum {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.members-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; color: rgba(155,143,232,0.6);
+  letter-spacing: 0.22em; margin-bottom: 28px;
+}
+
+.main-title {
+  font-size: clamp(20px, 5vw, 30px);
+  font-weight: 700; line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+.main-sub {
+  font-size: 15px; color: rgba(255,255,255,0.5);
+  line-height: 1.9;
+}
+.main-sub em { font-style: normal; color: var(--purple-pale); font-weight: 500; }
+
+.btn-row {
+  display: flex; justify-content: center;
+  margin-top: 36px;
+}
+
+.btn-fire {
+  background: linear-gradient(135deg, var(--yellow), var(--coral));
+  color: #1a1530;
+  border: none;
+  padding: 16px 36px;
+  border-radius: 16px;
+  font-size: 16px; font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 28px rgba(244,197,82,0.35);
+  transition: transform 0.15s, box-shadow 0.2s;
+  touch-action: manipulation;
+}
+.btn-fire:active { transform: scale(0.95); }
+
+.fire-count {
+  background: rgba(26,21,48,0.3);
+  border-radius: 20px;
+  font-size: 14px; padding: 2px 12px;
+  font-family: 'Space Mono', monospace;
+}
+
+.counter-chips {
+  display: flex; justify-content: center;
+  gap: 12px; margin-top: 32px; flex-wrap: wrap;
+}
+.chip {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 22px; min-width: 100px;
+}
+.chip-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px; font-weight: 700;
+}
+.chip-label {
+  font-size: 10px; color: rgba(255,255,255,0.35);
+  margin-top: 4px; letter-spacing: 0.1em;
+}
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+.section-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--purple-pale);
+  letter-spacing: 0.1em; margin-bottom: 16px;
+}
+
+.comment-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px; margin-bottom: 20px;
+}
+
+.inp {
+  display: block; width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(155,143,232,0.25);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #fff; outline: none;
+  transition: border 0.2s;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+}
+.inp::placeholder { color: rgba(255,255,255,0.22); }
+.inp:focus { border-color: var(--purple-light); }
+.inp-msg { resize: none; min-height: 80px; }
+
+.form-footer {
+  display: flex; justify-content: space-between;
+  align-items: center;
+}
+
+.char-count { font-size: 12px; color: rgba(255,255,255,0.28); }
+
+.btn-submit {
+  background: var(--purple);
+  color: #fff; border: none;
+  padding: 12px 24px; border-radius: 10px;
+  font-size: 14px; font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  touch-action: manipulation;
+}
+.btn-submit:hover  { background: #7B6FEF; }
+.btn-submit:active { transform: scale(0.96); }
+
+.comment-list { display: flex; flex-direction: column; gap: 10px; }
+
+.empty-state {
+  text-align: center; padding: 44px 0;
+  color: rgba(255,255,255,0.22);
+  font-size: 14px; line-height: 2.4;
+}
+
+.comment-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 15px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+  animation: slideIn 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.avatar-sm {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+
+.comment-body  { flex: 1; min-width: 0; }
+.comment-nick  { font-size: 13px; font-weight: 700; color: var(--purple-pale); }
+.comment-time  { font-size: 11px; color: rgba(255,255,255,0.28); margin-left: 7px; font-family: 'Space Mono', monospace; }
+.comment-text  { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.65; margin-top: 5px; word-break: break-word; }
+
+.comment-like {
+  display: inline-block;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.38);
+  font-size: 12px; padding: 4px 12px;
+  border-radius: 20px; cursor: pointer;
+  margin-top: 8px; font-family: 'Space Mono', monospace;
+  transition: all 0.15s; touch-action: manipulation;
+}
+.comment-like:active { transform: scale(0.94); }
+.comment-like.liked { border-color: var(--coral); color: var(--coral); background: rgba(255,123,107,0.1); }
+
+.footer-area {
+  text-align: center; margin-top: 56px;
+  color: rgba(255,255,255,0.18);
+  font-size: 11px; font-family: 'Space Mono', monospace;
+  letter-spacing: 0.06em; line-height: 2;
+}
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+
+<div class="page">
+
+  <div class="header">
+    <div class="badge">🌙 뭐해 디스코드 서버</div>
+    <div class="big-num">200</div>
+    <div class="members-label">M · E · M · B · E · R · S</div>
+    <h1 class="main-title">
+      같이 늦은 밤까지<br>
+      "뭐해" 한 마디로 이어온 인연 🌙
+    </h1>
+    <p class="main-sub">
+      자려고 누웠다가 켜본 디스코드,<br>
+      <em>뭐해?</em> 하고 던진 한 마디에 시작된 대화들.<br>
+      그 인연들이 쌓여 어느새 <em>200명</em>이 됐어요.
+    </p>
+
+    <div class="btn-row">
+      <button class="btn-fire" id="btnFire">
+        🎊 축하 터뜨리기
+        <span class="fire-count" id="fireCount">0</span>
+      </button>
+    </div>
+
+    <div class="counter-chips">
+      <div class="chip">
+        <div class="chip-num" style="color:var(--purple-light);">200</div>
+        <div class="chip-label">MEMBERS</div>
+      </div>
+      <div class="chip">
+        <div class="chip-num" style="color:var(--yellow);" id="fireCountBig">0</div>
+        <div class="chip-label">축하 터뜨린 횟수</div>
+      </div>
+      <div class="chip">
+        <div class="chip-num" style="color:var(--coral);" id="commentCountBig">0</div>
+        <div class="chip-label">축하 댓글</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title">💬 축하 메시지 남기기</div>
+
+  <div class="comment-form">
+    <input class="inp" id="inpNick" type="text" placeholder="닉네임 (ex. 철수#1234)" maxlength="20" autocomplete="off">
+    <textarea class="inp inp-msg" id="inpMsg" placeholder="200명 달성 축하 메시지를 남겨주세요 🎉" maxlength="200"></textarea>
+    <div class="form-footer">
+      <span class="char-count" id="charCount">0 / 200</span>
+      <button class="btn-submit" id="btnSubmit">댓글 달기 ✨</button>
+    </div>
+  </div>
+
+  <div class="comment-list" id="commentList"></div>
+
+  <div class="footer-area">
+    <div>MWOHAE DISCORD · 200 MEMBERS</div>
+    <div>늦은 밤 뭐해 하고 물어봐준 모두에게 감사해요 🙏</div>
+  </div>
+
+</div>
+
+<script>
+/* ── 별 배경 ── */
+var sC = document.getElementById('starCanvas');
+var sX = sC.getContext('2d');
+var stars = [], starT = 0;
+
+function resizeStar() {
+  sC.width = window.innerWidth;
+  sC.height = window.innerHeight;
+  stars = [];
+  for (var i = 0; i < 100; i++) {
+    stars.push({
+      x: Math.random() * sC.width,
+      y: Math.random() * sC.height,
+      r: Math.random() * 1.2 + 0.3,
+      speed: Math.random() * 0.004 + 0.002,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+resizeStar();
+window.addEventListener('resize', resizeStar);
+
+function drawStars() {
+  sX.clearRect(0, 0, sC.width, sC.height);
+  for (var i = 0; i < stars.length; i++) {
+    var s = stars[i];
+    var a = 0.25 + 0.55 * Math.sin(starT * s.speed + s.phase);
+    sX.beginPath();
+    sX.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    sX.fillStyle = 'rgba(196,188,255,' + a + ')';
+    sX.fill();
+  }
+  starT++;
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+/* ── 폭죽 ── */
+var cfC = document.getElementById('confettiCanvas');
+var cfX = cfC.getContext('2d');
+var pieces = [];
+var fireCnt = 0;
+var COLS = ['#9B8FE8','#F4C552','#FF7B6B','#ffffff','#C4BCFF','#5B4FCF','#FFD700'];
+
+function resizeCf() {
+  cfC.width = window.innerWidth;
+  cfC.height = window.innerHeight;
+}
+resizeCf();
+window.addEventListener('resize', resizeCf);
+
+function fireConfetti() {
+  fireCnt++;
+  document.getElementById('fireCount').textContent = fireCnt;
+  document.getElementById('fireCountBig').textContent = fireCnt;
+
+  var origins = [0.2, 0.5, 0.8];
+  for (var o = 0; o < origins.length; o++) {
+    var ox = origins[o];
+    for (var j = 0; j < 70; j++) {
+      pieces.push({
+        x: cfC.width * ox + (Math.random() - 0.5) * 120,
+        y: cfC.height * 0.15,
+        vx: (Math.random() - 0.5) * 14,
+        vy: -(Math.random() * 12 + 5),
+        r: Math.random() * 7 + 3,
+        color: COLS[Math.floor(Math.random() * COLS.length)],
+        rot: Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.22,
+        shape: Math.random() > 0.4 ? 'rect' : 'circle',
+        life: 1.0
+      });
+    }
+  }
+}
+
+function animateCf() {
+  cfX.clearRect(0, 0, cfC.width, cfC.height);
+  var alive = [];
+  for (var i = 0; i < pieces.length; i++) {
+    var p = pieces[i];
+    cfX.save();
+    cfX.globalAlpha = Math.max(0, p.life);
+    cfX.fillStyle = p.color;
+    cfX.translate(p.x, p.y);
+    cfX.rotate(p.rot);
+    if (p.shape === 'rect') {
+      cfX.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+    } else {
+      cfX.beginPath(); cfX.arc(0, 0, p.r, 0, Math.PI * 2); cfX.fill();
+    }
+    cfX.restore();
+    p.x += p.vx; p.y += p.vy;
+    p.vy += 0.28; p.vx *= 0.99;
+    p.rot += p.rotV; p.life -= 0.007;
+    if (p.life > 0) alive.push(p);
+  }
+  pieces = alive;
+  requestAnimationFrame(animateCf);
+}
+animateCf();
+
+/* ── 댓글 ── */
+var AV_COLS = [
+  ['#5B4FCF','#C4BCFF'], ['#FF7B6B','#fff'],
+  ['#F4C552','#1e1b2e'], ['#0f6e56','#9FE1CB'],
+  ['#3B3270','#C4BCFF'], ['#993556','#fff']
+];
+var comments = [];
+
+function getInitial(n) {
+  var clean = n.replace(/#\d+/, '').trim();
+  return clean[0] || '?';
+}
+function getColor(n) {
+  var h = 0;
+  for (var i = 0; i < n.length; i++) h = (h * 31 + n.charCodeAt(i)) % AV_COLS.length;
+  return AV_COLS[Math.abs(h) % AV_COLS.length];
+}
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function nowTime() {
+  return new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function render() {
+  var list = document.getElementById('commentList');
+  list.innerHTML = '';
+
+  if (comments.length === 0) {
+    var empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = '🌙<br>아직 댓글이 없어요.<br>첫 번째 축하 메시지를 남겨주세요!';
+    list.appendChild(empty);
+  } else {
+    for (var i = 0; i < comments.length; i++) {
+      (function(idx) {
+        var c = comments[idx];
+        var colors = getColor(c.nick);
+        var bg = colors[0], fg = colors[1];
+        var d = document.createElement('div');
+        d.className = 'comment-item';
+        d.innerHTML =
+          '<div class="avatar-sm" style="background:' + bg + ';color:' + fg + ';">' + getInitial(c.nick) + '</div>' +
+          '<div class="comment-body">' +
+            '<div><span class="comment-nick">' + esc(c.nick) + '</span><span class="comment-time">' + c.time + '</span></div>' +
+            '<div class="comment-text">' + esc(c.msg) + '</div>' +
+            '<button class="comment-like' + (c.liked ? ' liked' : '') + '" id="like-' + idx + '">♡ ' + c.likes + '</button>' +
+          '</div>';
+        list.appendChild(d);
+
+        document.getElementById('like-' + idx).addEventListener('click', function() {
+          comments[idx].liked = !comments[idx].liked;
+          comments[idx].likes += comments[idx].liked ? 1 : -1;
+          render();
+        });
+      })(i);
+    }
+  }
+  document.getElementById('commentCountBig').textContent = comments.length;
+}
+
+function submitComment() {
+  var nick = document.getElementById('inpNick').value.trim();
+  var msg  = document.getElementById('inpMsg').value.trim();
+  if (!nick) { alert('닉네임을 입력해주세요!'); return; }
+  if (!msg)  { alert('메시지를 입력해주세요!'); return; }
+  comments.unshift({ nick: nick, msg: msg, time: nowTime(), likes: 0, liked: false });
+  document.getElementById('inpMsg').value = '';
+  document.getElementById('charCount').textContent = '0 / 200';
+  render();
+}
+
+/* ── 이벤트 바인딩 ── */
+document.getElementById('btnFire').addEventListener('click', fireConfetti);
+document.getElementById('btnSubmit').addEventListener('click', submitComment);
+
+document.getElementById('inpMsg').addEventListener('input', function() {
+  document.getElementById('charCount').textContent = this.value.length + ' / 200';
+});
+document.getElementById('inpNick').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('inpMsg').focus();
+});
+document.getElementById('inpMsg').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitComment();
+});
+
+render();
+</script>
+</body>
+</html>
